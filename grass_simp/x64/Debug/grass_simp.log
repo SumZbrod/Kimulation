@@ -1,0 +1,4 @@
+﻿  Karta.cpp
+C:\Users\Kiki\source\repos\grass_simp\grass_simp\Karta.h(9,7): warning C4200: nonstandard extension used: zero-sized array in struct/union
+C:\Users\Kiki\source\repos\grass_simp\grass_simp\Karta.h(9,7): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+  grass_simp.vcxproj -> C:\Users\Kiki\source\repos\grass_simp\x64\Debug\grass_simp.exe
