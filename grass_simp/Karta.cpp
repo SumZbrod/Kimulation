@@ -43,7 +43,7 @@ void Karta::show() {
 	}
 }
 
-bool Karta::in_area(int x, int y) {
+bool Karta::in_area(int y, int x) {
 	/// <summary>
 	/// function return the true if x and y in the area
 	/// </summary>
@@ -61,9 +61,9 @@ int* Karta::getRouteWithoutWall(int start_x, int start_y, int finish_x, int fini
 	// force equal sum of weights of each square of the minimal route or 0 if we don't know
 
 	int array_len = Karta::height * Karta::width;
-	int** obs_ptr = new int* [height];
+	int** obs_array =  new int* [height];
 	for (int i = 0; i < width; i++) {
-		obs_ptr[i] = new int[width]();
+		obs_array[i] = new int[width]();
 	}
 
 	// initialition of values for using in cicle 
@@ -72,17 +72,13 @@ int* Karta::getRouteWithoutWall(int start_x, int start_y, int finish_x, int fini
 	int sub_x = 0;
 	int sub_y = 0;
 	int min_v = 0;
-		
-	// set pointer to start position 
-	obs_ptr += start_x + start_y * Karta::width;
-
-	
+	int cell_value = 0;
 	// it's virtal coords of pointer in the map
 	int obs_x = start_x;
 	int obs_y = start_y;
 
-	// set th	e first square's force 
-	*obs_ptr = Karta::_world_map[obs_y][obs_x];
+	// set the first square's force 
+	obs_array[obs_y][obs_x] = Karta::_world_map[obs_y][obs_x];
 
 	bool target_finded = false;
 	int route_len = 0;
@@ -93,44 +89,46 @@ int* Karta::getRouteWithoutWall(int start_x, int start_y, int finish_x, int fini
 		// in this metric circle it's a squre rotated on 45 degree
 		// and r - its length of side this square
 		
+		std::cout << 2;
 		// increase lenght of route
 		route_len++;
 
 		// move right for start of square observation
-		obs_ptr++;
 		obs_x++;
 
 		for (int side = 0; side < 4; side++) {
+			std::cout << 3;
+
 			// side it's number of square's side
 			// 0, 1, 2, 3, - NE, NW, SW, SE: side
 			x_sign = signp(side - 2); // this math function convert : 0, 1, 2, 3 -> -1, -1, 1, 1
 			y_sign = 2 - std::abs(2 * side - 3); // this math function convert : 0, 1, 2, 3 -> -1, 1, 1, -1
 			for (int i = 0; i < r; i++) {
-				
+				std::cout << 4;
 				// this cycle goes around one side
 				
 				// check coords in the the area
 				if (Karta::in_area(obs_x, obs_y)) {
 					min_v = -1;
 					for (int sub_side = 0; sub_side < 4; sub_side++) {
+						std::cout << 5;
 						// finding the smallest value other than 0 around a cell in coords in obs_x, obs_y 
 						// sub_side it's right, up, left, down - 0, 1, 2, 3
 
 						// sub_x and sub_y it's shift around cell 
 						sub_x = std::abs(sub_side - 2) - 1; // this math function works how cos(pi/2 * sub_side): 0, 1, 2, 3 -> 1, 0, -1, 0
 						sub_y = std::abs(sub_side - 1) - 1; // this math function works how	sin(pi/2 * sub_side): 0, 1, 2, 3 -> 0, -1, 0, 1
-						
 						// and this sub's move coords arount cell like: (1, 0) - right; (0, -1) - up; (-1, 0) - left; (0, 1) - down 
-						int* shift_obs = obs_ptr + sub_x + sub_y * Karta::width;	
-						
+						cell_value = obs_array[obs_y + sub_y][obs_x + sub_x];
 						// find minimal value
-						if (*shift_obs != 0 &&
-							(min_v == -1 || *shift_obs < min_v) &&
-							Karta::in_area(obs_x + sub_x, obs_y + sub_y))
-			 				min_v = *shift_obs;
+						if (cell_value != 0 &&
+							(min_v == -1 || cell_value < min_v) &&
+							Karta::in_area(obs_y + sub_y, obs_x + sub_x))
+			 				min_v = cell_value;
+							
 					}	
 					//	
-					*obs_ptr = _world_map[obs_x][obs_y] + min_v;
+					obs_array[obs_y][obs_x] = _world_map[obs_y][obs_x] + min_v;
 				}		
 				// check whether the obs coordinates match the target
 				if (obs_x == finish_x && obs_y == finish_y) {
@@ -140,20 +138,20 @@ int* Karta::getRouteWithoutWall(int start_x, int start_y, int finish_x, int fini
 				// move coords by side
 				obs_x += x_sign;
 				obs_y += y_sign;
-				obs_ptr += x_sign + y_sign * width;
 			}
 			if (target_finded) break;
 		}
 		if (target_finded) break;
 	}
 
+	std::cout << 1;
 	if (!target_finded) throw "target doesn't found";
-	
+	std::cout << 2;
+
 	// after reaching the goal, the reverse pathfinding algorithm goes
 
 	// ptr_route - it's poiter show to arrai with directions for moving to goal
-	int* ptr_route = new int[route_len];
-	ptr_route += route_len;
+	int* route_array = new int[route_len];
 	int selected_side = 0;
 	int move_x = 0;
 	int move_y = 0;
@@ -165,46 +163,40 @@ int* Karta::getRouteWithoutWall(int start_x, int start_y, int finish_x, int fini
 		for (int sub_side = 0; sub_side < 4; sub_side++) {
 			sub_x = std::abs(sub_side - 2) - 1;
 			sub_y = std::abs(sub_side - 1) - 1;
-			int* shift_obs = obs_ptr + sub_x + sub_y * width;
+			cell_value = obs_array[obs_y + sub_y][obs_x + sub_x];
 
-			if (*shift_obs != 0 &&
-				(min_v == -1 || *shift_obs < min_v) &&
+			if (cell_value != 0 &&
+				(min_v == -1 || cell_value < min_v) &&
 				in_area(obs_x + sub_x, obs_y + sub_x)) {
-				min_v = *shift_obs;
+				min_v = cell_value;
 				move_x = sub_x;
 				move_y = sub_y;
 				selected_side = sub_side;
 			}
 		}
 		obs_x += move_x;
-	 
 		obs_y += move_y;
-		obs_ptr += move_x + move_y * width;
 		
-		std::cout << "selected_side "  << selected_side << '\n';
-		std::cout << "min_v "  << min_v << '\n';
-		std::cout << "obs_x " << obs_x << ", " << obs_y << '\n';
 		// we should turn around numers 0 <-> 2 and 1 <-> 3
-		*ptr_route = (2 - selected_side) % 4;
-		ptr_route--;
-		
-		sub_x = 1 - std::abs(selected_side - 2);
-		sub_y = 1 - std::abs(selected_side - 1);
-
+		route_array[route_len-i] = (2 - selected_side) % 4;
 	}
 
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			std::cout << *start_obs_ptr++ << '\t';
+			std::cout << obs_array[y][x]<< '\t';
 		}
 		std::cout << '\n';
 	}
-	ptr_route++;
 	for (int i = 0; i < route_len; i++) {
-		std::cout << *ptr_route++ << ", ";
+		std::cout << route_array[i] << ", ";
 	} 
 	std::cout << '\n';
 
-	return 0;
+	for (int i = 0; i < width; i++) {
+		delete[] obs_array[i];
+	}
+	delete[] obs_array;
+
+	return route_array;
 }
 
