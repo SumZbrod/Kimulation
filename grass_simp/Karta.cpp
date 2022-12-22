@@ -17,6 +17,10 @@ Karta::Karta(int height = 12, int width = 8) {
 	}
 }
 
+Karta::~Karta() {
+	delete Karta::world_map;
+}
+
 int Karta::get(int x, int y) {
 	return Karta::world_map[x + y * width];
 }
@@ -40,40 +44,56 @@ bool Karta::in_area(int x, int y) {
 
 
 int* Karta::getRoute_withoutwall(int start_x, int start_y, int finish_x, int finish_y) {
-	int radius = std::max(std::abs(start_x - finish_x), std::abs(start_y - finish_y));
-	int array_len = Karta::height * Karta::width;
+	/// <summary>
+	/// Method getRoute_withoutwall get from - to positons, and returns poiter to array of moves
+	///0, 1, 2, 3 - right, up, left, down
+	/// </summary>
+	
+	// obs_ptr - it's pointer to array of numbers showing the amount of minimal force needed to reach each square
+	// force equal sum of weights of each square of the minimal route or 0 if we don't know
 
+	int array_len = Karta::height * Karta::width;
 	int* obs_ptr = new int[array_len];
 
-
+	// set all value equal 0, because we don't know yet
 	for (int i = 0; i < array_len; i++) {
 		*obs_ptr++ = 0;
 	}
+	// return poiter to start
 	obs_ptr -= array_len;
-	int* start_obs_ptr = obs_ptr;
-	//int r = 1;
+
+	// initialition of values for using in cicle 
 	int x_sign = 0;
 	int y_sign = 0;
 	int sub_x = 0;
 	int sub_y = 0;
-	//while (true) {
-	obs_ptr += start_x + Karta::width * start_y;
-	*obs_ptr = 1;
-	int obs_x = start_x;
-	int obs_y = start_y;
 	int min_v = 0;
 
-	bool target_finded = false;
-	int roud_len = 0;
+	// set pointer to start position 
+	obs_ptr += start_x + Karta::width * start_y;
+	
+	// it's virtal coords of pointer in the map
+	int obs_x = start_x;
+	int obs_y = start_y;
 
-	for (int r = 1; r < 15; r++) {
-		roud_len++;
+	// set the first square's force 
+	*obs_ptr = Karta::get(obs_x, obs_y);
+	
+	bool target_finded = false;
+	int route_len = 0;
+
+	// 
+	for (int r = 1; r < Karta::width + Karta::height; r++) {
+		route_len++;
+		// move right
 		obs_ptr++;
 		obs_x++;
+		// move by sides
+		// 0, 1, 2, 3 - quarters
 		for (int side = 0; side < 4; side++) {
 			x_sign = signp(side - 2);
 			y_sign = 2 - std::abs(2 * side - 3);
-			//std::cout << y_sign << ' ' << x_sign << std::endl;
+
 			for (int i = 0; i < r; i++) {
 				//std::cout << obs_x << ", " << obs_y << std::endl;
 				if (Karta::in_area(obs_x, obs_y)) {
@@ -111,33 +131,45 @@ int* Karta::getRoute_withoutwall(int start_x, int start_y, int finish_x, int fin
 		//std::cout << '\n';
 		if (target_finded) break;
 	}
-	if (!target_finded) throw "target doesn't found";
+	//if (!target_finded) throw "target doesn't found";
 
-	int* ptr_roude = new int[roud_len];
-	ptr_roude += roud_len-1;
-	ptr_roude--;
+	int* ptr_routee = new int[route_len];
+	ptr_routee += route_len;
+	int selected_side = 0;
+	int move_x = 0;
+	int move_y = 0;
 
-	for (int i = 0; i < roud_len; i++) {
-		obs_ptr++;
-		obs_x++;
+	for (int i = 0; i < route_len; i++) {
 		min_v = -1;
+		selected_side = -1;
+		
 		for (int side = 0; side < 4; side++) {
-			x_sign = signp(side - 2);
-			y_sign = 2 - std::abs(2 * side - 3);
-			obs_x += x_sign;
-			obs_y += y_sign;
-			obs_ptr += x_sign + y_sign * Karta::width;
+			sub_x = std::abs(side - 2) - 1;
+			sub_y = std::abs(side - 1) - 1;
+			obs_ptr += (obs_x + sub_x) + (obs_y + sub_x) * Karta::width;
 			if (*obs_ptr != 0 &&
 				(min_v == -1 || *obs_ptr < min_v) &&
-				Karta::in_area(obs_x + sub_x, obs_y + sub_y))
+				Karta::in_area(obs_x + sub_x, obs_y + sub_x)) {
 				min_v = *obs_ptr;
+				move_x = sub_x;
+				move_y = sub_y;
+			}
 		}
-		*ptr_roude = min_v;
-		ptr_roude--;
-		obs_ptr--;
-		obs_x--;
-	}
+		obs_x += move_x;
+		obs_y += move_y;
+		obs_ptr += move_x + move_y * Karta::width;
+		
+		std::cout << selected_side << '\n';
+		std::cout << min_v << '\n';
+		std::cout << obs_x << ", " << obs_y << '\n';
 
+		*ptr_routee = selected_side;
+		ptr_routee--;
+		
+		sub_x = 1 - std::abs(selected_side - 2);
+		sub_y = 1 - std::abs(selected_side - 1);
+
+	}
 
 	for (int y = 0; y < Karta::height; y++) {
 		for (int x = 0; x < Karta::width; x++) {
@@ -145,9 +177,10 @@ int* Karta::getRoute_withoutwall(int start_x, int start_y, int finish_x, int fin
 		}
 		std::cout << '\n';
 	}
-
-	for (int i = 0; i < roud_len; i++) {
-		std::cout << *ptr_roude++ << ", ";
+	ptr_routee++;
+	for (int i = 0; i < route_len; i++) {
+		std::cout << *ptr_routee++ << ", ";
 	} 
+
 	return 0;
 }

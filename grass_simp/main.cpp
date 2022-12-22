@@ -8,7 +8,7 @@ void test_karta() {
 	int h = 8;
 	Karta forest(h, w);
 	
-	forest.getRoute_withoutwall(4, 4, 6, 7);
+	forest.getRoute_withoutwall(0, 0, 0, 3);
 }
 
 void test_ptr_array() {
@@ -50,4 +50,5 @@ int main() {
 	//test_break();
 	//test_exeption();
 	test_karta();
+	return 0;
 }
