@@ -7,7 +7,8 @@ void test_karta() {
 	int w = 12;
 	int h = 8;
 	Karta forest(h, w);
-	forest.getRouteWithoutWall(1, 1, 3, 3);
+	int* A = forest.getRouteWithoutWall(1, 1, 3, 3);
+	//delete[] A;
 }
 
 int main() {
