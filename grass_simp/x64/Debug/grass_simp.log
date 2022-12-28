@@ -1,2 +1,4 @@
-﻿  main.cpp
+﻿  Okno.cpp
+C:\Users\Kiki\source\repos\grass_simp\grass_simp\Okno.cpp(30,28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Kiki\source\repos\grass_simp\grass_simp\Okno.cpp(30,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   grass_simp.vcxproj -> C:\Users\Kiki\source\repos\grass_simp\x64\Debug\grass_simp.exe

@@ -10,18 +10,16 @@ Karta::Karta(int map_height, int map_width) {
 	width = map_width;
 
 	// Memory allocation
-	_world_map = std::vector<float>(height*width, 1.f);
+	//_world_map = std::vector<float>(height*width, 1.f);
+	_world_map = std::vector < std::vector<float> >(height, std::vector<float>(width, 1.f));
+	
 }
 
-Karta::~Karta() {
-	std::vector<float>().swap(_world_map);
+//Karta::~Karta() {
+	//std::vector<float>().swap(_world_map);
 	//delete _world_map;
 
-}
-
-float Karta::get(int y, int x) {
-	return _world_map[x + y * width];
-}
+//}
 
 /// <summary>
 /// print all value of map in console
@@ -29,9 +27,8 @@ float Karta::get(int y, int x) {
 void Karta::show() {
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			std::cout << get(y, x) << '\t';
-
-
+			//std::cout << get(y, x) << '\t';
+			std::cout << _world_map[y][x] << '\t';
 		}
 		std::cout << '\n';
 	}
@@ -41,10 +38,8 @@ bool Karta::in_area(int y, int x) {
 	/// <summary>
 	/// function return the true if x and y in the area
 	/// </summary>
-	return (x >= 0 && x < Karta::width&& y >= 0 && y < Karta::height);
+	return (x >= 0 && x < width && y >= 0 && y < height);
 }
-
-
 
 //int* Karta::getRouteWithoutWall(int start_x, int start_y, int finish_x, int finish_y) {
 std::vector<int> Karta::getRouteWithoutWall(int start_x, int start_y, int finish_x, int finish_y) {
@@ -62,7 +57,8 @@ std::vector<int> Karta::getRouteWithoutWall(int start_x, int start_y, int finish
 		obs_array[i] = new int[width]();
 	}*/
 
-	std::vector<float> obs_array(height * width, 0.f);
+	//std::vector<float> obs_array(height * width, 0.f);
+	std::vector<std::vector<float>> obs_array(height, std::vector<float>(width, 0.f));
 
 	// initialition of values for using in cicle 
 	int x_sign = 0;
@@ -71,7 +67,6 @@ std::vector<int> Karta::getRouteWithoutWall(int start_x, int start_y, int finish
 	int sub_y = 0;
 	float min_v = 0.f;
 	float cell_value = 0.f;
-	int obs_coord = 0;
 
 	// it's virtal coords of pointer in the map
 	int obs_x = start_x;
@@ -80,7 +75,8 @@ std::vector<int> Karta::getRouteWithoutWall(int start_x, int start_y, int finish
 	// set the first square's force 
 	//obs_array[obs_y][obs_x] = Karta::_world_map[obs_y][obs_x];
 	//obs_array[obs_y][obs_x] = Karta::_world_map[obs_x + obs_y * width];
-	obs_array[obs_y*width+obs_x] = get(obs_y, obs_x);
+	
+	obs_array[obs_y][obs_x] = _world_map[obs_y][obs_x];
 
 	bool target_finded = false;
 	int route_len = 0;
@@ -108,7 +104,7 @@ std::vector<int> Karta::getRouteWithoutWall(int start_x, int start_y, int finish
 				// this cycle goes around one side
 				
 				// check coords in the the area
-				if (Karta::in_area(obs_x, obs_y)) {
+				if (Karta::in_area(obs_y, obs_x)) {
 					min_v = -1.f;
 					for (int sub_side = 0; sub_side < 4; sub_side++) {
 						// finding the smallest value other than 0 around a cell in coords in obs_x, obs_y 
@@ -118,11 +114,11 @@ std::vector<int> Karta::getRouteWithoutWall(int start_x, int start_y, int finish
 						sub_x = std::abs(sub_side - 2) - 1; // this math function works how cos(pi/2 * sub_side): 0, 1, 2, 3 -> 1, 0, -1, 0
 						sub_y = std::abs(sub_side - 1) - 1; // this math function works how	sin(pi/2 * sub_side): 0, 1, 2, 3 -> 0, -1, 0, 1
 						// and this sub's move coords arount cell like: (1, 0) - right; (0, -1) - up; (-1, 0) - left; (0, 1) - down 
+						//std::cout << 117 << '\t' << obs_y << ", " << obs_x << '\n';
+						//std::cout << 118 << '\t' << obs_y + sub_y << ", " << obs_x + sub_x << '\n';
 						if (Karta::in_area(obs_y + sub_y, obs_x + sub_x)){
-							//std::cout << 118 << obs_y + sub_y << ", " << obs_x + sub_x << '\n';
-							obs_coord = width * (obs_y + sub_y) + obs_x + sub_x;
-							cell_value = obs_array[obs_coord];
-
+							//std::cout << 120 << '\t' << obs_y + sub_y << ", " << obs_x + sub_x << '\n';
+							cell_value = obs_array[obs_y + sub_y][obs_x + sub_x];
 							if (cell_value != 0 && (min_v == -1 || cell_value < min_v)) {
 			 					min_v = cell_value;
 							}
@@ -130,8 +126,9 @@ std::vector<int> Karta::getRouteWithoutWall(int start_x, int start_y, int finish
 						// find minimal value
 					}	
 					//	
-					//std::cout << 127 << obs_y << ", " << obs_x << '\n';
-					obs_array[obs_y*width+obs_x] = get(obs_y, obs_x) + min_v;
+					//std::cout << 129 << '\t' << obs_y << ", " << obs_x << '\n';
+					//obs_array[obs_y*width+obs_x] = get(obs_y, obs_x) + min_v;
+					obs_array[obs_y][obs_x] = _world_map[obs_y][obs_x] + min_v;
 				}		
 				// check whether the obs coordinates match the target
 				if (obs_x == finish_x && obs_y == finish_y) {
@@ -157,6 +154,9 @@ std::vector<int> Karta::getRouteWithoutWall(int start_x, int start_y, int finish
 	int selected_side = 0;
 	int move_x = 0;
 	int move_y = 0;
+	
+	// the variable el alternates between 1 and 0 it's needed to change the sign less than and the sign less than or equal to. This is necessary so that there is an alternation of direction. 
+	int el = 0;
 	// loop iterates through the aaray by spiral and fills it by force
 	for (int i = route_len-1; i >= 0; --i) {
 		min_v = -1.f;
@@ -167,9 +167,10 @@ std::vector<int> Karta::getRouteWithoutWall(int start_x, int start_y, int finish
 			if (Karta::in_area(obs_y + sub_y, obs_x + sub_x)) {
 				//std::cout << 162 << obs_y + sub_y << ", " << obs_x + sub_x << '\n';
 				//cell_value = obs_array[obs_y + sub_y][obs_x + sub_x];
-				obs_coord = width * (obs_y + sub_y) + obs_x + sub_x;
-				cell_value = obs_array[obs_coord];
-				if (cell_value != 0 && (min_v == -1 || cell_value < min_v)) {
+				//obs_coord = width * (obs_y + sub_y) + obs_x + sub_x;
+				//cell_value = obs_array[obs_coord];
+				cell_value = obs_array[obs_y + sub_y][obs_x + sub_x];
+				if (cell_value != 0 && (min_v == -1 || cell_value < min_v + el)) {
 					min_v = cell_value;
 					move_x = sub_x;
 					move_y = sub_y;
@@ -177,29 +178,33 @@ std::vector<int> Karta::getRouteWithoutWall(int start_x, int start_y, int finish
 				}
 			}
 		}
+		//0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3,
 		obs_x += move_x;
 		obs_y += move_y;
 		
 		// we should turn around numers 0 <-> 2 and 1 <-> 3
 		//std::cout << 176 << "i = " << i << '\n';
-		route_array[i] = (2 - selected_side) % 4;
+		route_array[i] = (2 + selected_side) % 4;
+		el = 1 - el;
 	}
 
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			std::cout << obs_array[y * width + x]<< '\t';
+			//std::cout << obs_array[y * width + x] << '\t';
+			std::cout << obs_array[y][x] << '\t';
 		}
 		std::cout << '\n';
 	}
+
 	for (int i = 0; i < route_len; i++) {
 		std::cout << route_array[i] << ", ";
 	} 
 	std::cout << '\n';
-
+	//rebild_to_vector
 	/*for (int i = 0; i < height; i++) {
 		delete[] obs_array[i];
 	}*/
-	std::vector<float>().swap(obs_array);
+	//std::vector<float>().swap(obs_array);
 
 	//delete &obs_array;
 	return route_array;

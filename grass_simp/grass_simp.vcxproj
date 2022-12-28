@@ -141,9 +141,13 @@
   <ItemGroup>
     <ClCompile Include="Karta.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Okno.cpp" />
+    <ClCompile Include="Person.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Karta.h" />
+    <ClInclude Include="Okno.h" />
+    <ClInclude Include="Person.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
