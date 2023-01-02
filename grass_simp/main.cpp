@@ -1,19 +1,26 @@
 #include "Karta.h"
 #include "Okno.h"
+#include "Human.h"
 
 void test_karta() {
 	int h = 8;
 	int w = 12;
+
 	Karta forest(h, w);
-	
-	
-	//forest.show();
+
+	int window_height = 1440, window_width = 810;
+	Okno village_window(window_height, window_width, forest);
+
+	village_window.loop();
+
 	//int* A = forest.getRouteWithoutWall(1, 1, 3, 3);
 	//delete[] A;
 	//std::vector<int> A = forest.getRouteWithoutWall(0, 0, 7, 7);
 
-	Okno Window(800, 600);
-	Window.loop();
+	
+
+	//Okno Window(800, 600);
+	//Window.loop(forest);
 
 
 	//std::vector<int> B = forest.getRouteWithoutWall(4, 3, 1, 1);
@@ -46,6 +53,7 @@ void test_karta() {
 }
 
 int main() {
+
 	//test_ptr_array();
 	//test_break();
 	//test_exeption();

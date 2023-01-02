@@ -139,12 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="A.cpp" />
+    <ClCompile Include="Human.cpp" />
     <ClCompile Include="Karta.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Okno.cpp" />
     <ClCompile Include="Person.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="A.h" />
+    <ClInclude Include="Human.h" />
     <ClInclude Include="Karta.h" />
     <ClInclude Include="Okno.h" />
     <ClInclude Include="Person.h" />
