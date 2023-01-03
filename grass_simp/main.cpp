@@ -4,7 +4,7 @@
 
 void test_karta() {
 	//int window_height = 800, window_width = 1400, cell_diameter = 10;
-	int window_height = 1080, window_width = 1920, cell_diameter = 10;
+	int window_height = 1080, window_width = 1920, cell_diameter = 50;
 	Okno village_window(window_height, window_width, cell_diameter);
 	village_window.loop();
 

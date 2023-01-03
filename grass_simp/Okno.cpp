@@ -18,18 +18,24 @@ void Okno::draw_person(sf::RenderWindow& window)
 	window.draw(point);
 }
 
+sf::Color Okno::getGrassColor(float level)
+{
+	int index = static_cast<int>(level * grassColors.size());
+	if (index >= grassColors.size()) index = grassColors.size() - 1;
+	sf::Color res_clr = grassColors[index];
+	return res_clr;
+}
+
 void Okno::loop()
 {
 	sf::RenderWindow window(sf::VideoMode(m_width, m_height), "Kimulation", sf::Style::Fullscreen);
 
 	sf::RectangleShape square(sf::Vector2f(m_cell_diameter, m_cell_diameter));
 	
-	
 	int x = 0, y = 0;
 	window.clear(sf::Color::Black);
 	window.setFramerateLimit(120);
-	int r = 0;
-
+	int r = 3;
 	while (window.isOpen()) 
 	{
 		sf::Event evnt;
@@ -47,7 +53,8 @@ void Okno::loop()
 			{
 				m_world.add(y, x, .0001);
 				square.setPosition(x * m_cell_diameter, y * m_cell_diameter);
-				square.setFillColor(sf_palette[int(m_world.world_map[y][x]*4)]);
+				//square.setFillColor(sf_palette[int(m_world.world_map[y][x] * palette_len)]);
+				square.setFillColor(getGrassColor(m_world.world_map[y][x]));
 				window.draw(square);
 			}
 		}
@@ -60,7 +67,7 @@ void Okno::loop()
 
 			}
 		}
-		m_world.add(m_person.y_pos, m_person.x_pos, -.1);
+		//m_world.add(m_person.y_pos, m_person.x_pos, -.1);
 
 		draw_person(window);
 		window.display();
