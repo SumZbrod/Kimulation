@@ -1,30 +1,34 @@
 #include "Okno.h"
+#include "Karta.h"
+#include "Person.h"
 
-Okno::Okno(int window_height, int window_width, Karta world)
-	: m_height(window_height), m_width(window_width), m_world(world)
-{	
-	//std::cout << m_height << ' ' << m_world.m_height << ' ' << m_width << ' ' << m_world.m_width << '\n';
-	std::cout << m_height / m_world.m_height << ' ' << m_width / m_world.m_width << '\n';
-
-	cell_diameter = std::min(m_height / m_world.m_height, m_width / m_world.m_width);
-	Person m_person();
+Okno::Okno(int window_height, int window_width, int cell_diameter)
+	: m_height(window_height), m_width(window_width), m_cell_diameter(cell_diameter), m_world(Karta(4, 4))
+{
+	int h = m_height / m_cell_diameter, w = m_width / m_cell_diameter;
+	m_world = Karta(h, w);
+	m_person = Person(h/2, w/2);
 }
 
 void Okno::draw_person(sf::RenderWindow& window)
 {
-	sf::CircleShape point(cell_diameter / 4);
-	point.setPosition(m_person.x_pos * cell_diameter + cell_diameter / 2, m_person.y_pos * cell_diameter + cell_diameter / 2);
+	sf::CircleShape point(m_cell_diameter / 4);
+	point.setPosition(m_person.x_pos * m_cell_diameter + m_cell_diameter / 4, m_person.y_pos * m_cell_diameter + m_cell_diameter / 4);
 	point.setFillColor(sf::Color::Yellow);
 	window.draw(point);
 }
 
 void Okno::loop()
 {
-	sf::RenderWindow window(sf::VideoMode(m_height, m_width), "Kimulation");
-	sf::RectangleShape square(sf::Vector2f(cell_diameter, cell_diameter));
+	sf::RenderWindow window(sf::VideoMode(m_width, m_height), "Kimulation", sf::Style::Fullscreen);
+
+	sf::RectangleShape square(sf::Vector2f(m_cell_diameter, m_cell_diameter));
+	
+	
 	int x = 0, y = 0;
 	window.clear(sf::Color::Black);
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(120);
+	int r = 0;
 
 	while (window.isOpen()) 
 	{
@@ -41,12 +45,23 @@ void Okno::loop()
 		{
 			for (float x = 0; x < m_world.m_width; x++) 
 			{
-				square.setPosition(x * cell_diameter, y * cell_diameter);
+				m_world.add(y, x, .0001);
+				square.setPosition(x * m_cell_diameter, y * m_cell_diameter);
 				square.setFillColor(sf_palette[int(m_world.world_map[y][x]*4)]);
 				window.draw(square);
 			}
 		}
 		m_person.update(&m_world);
+		for (int x_0 = -r; x_0 < r; x_0++)
+		{
+			for (int y_0 = -r; y_0 < r; y_0++)
+			{	
+				m_world.add(m_person.y_pos + y_0, m_person.x_pos + x_0, -.01);
+
+			}
+		}
+		m_world.add(m_person.y_pos, m_person.x_pos, -.1);
+
 		draw_person(window);
 		window.display();
 	

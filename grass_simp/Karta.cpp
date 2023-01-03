@@ -1,10 +1,15 @@
 #include "Karta.h"
+#include <exception>
+#include <string>
+#include <sstream>
+#include <utility>
+#include <stdexcept>
 
 int signp(int x) {
 	return (x < 0) ? -1 : 1;
 }
 
-Karta::Karta(int map_height = 8, int map_width = 12) 
+Karta::Karta(int map_height, int map_width) 
 	: m_height(map_height), m_width(map_width)
 
 {
@@ -17,7 +22,7 @@ Karta::Karta(int map_height = 8, int map_width = 12)
 
 //}
 
-/// <summary>
+/// <summary>		
 /// print all value of map in console
 /// </summary>
 void Karta::show() {
@@ -36,6 +41,18 @@ bool Karta::in_area(int y, int x) {
 	/// function return the true if x and y in the area
 	/// </summary>
 	return (x >= 0 && x < m_width && y >= 0 && y < m_height);
+}
+
+void Karta::add(int y, int x, float v) {
+	if (in_area(y, x))
+	{
+		float old_v = world_map[y][x];
+		world_map[y][x] = std::min(1.f, std::max(0.f, v + old_v));
+	}
+	/*else
+	{
+		throw std::out_of_range("Out of range (" + std::to_string(x) + ' ' + std::to_string(y) + ')');
+	}*/
 }
 
 //int* Karta::getRouteWithoutWall(int start_x, int start_y, int finish_x, int finish_y) {

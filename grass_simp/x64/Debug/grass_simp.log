@@ -1,18 +1,2 @@
-﻿  Okno.cpp
-C:\Users\Kiki\source\repos\grass_simp\grass_simp\Okno.cpp(10,9): warning C4930: 'Person m_person(void)': prototyped function not called (was a variable definition intended?)
-C:\Users\Kiki\source\repos\grass_simp\grass_simp\Okno.cpp(15,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Kiki\source\repos\grass_simp\grass_simp\Okno.cpp(16,103): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Kiki\source\repos\grass_simp\grass_simp\Okno.cpp(16,51): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Kiki\source\repos\grass_simp\grass_simp\Okno.cpp(24,56): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\Kiki\source\repos\grass_simp\grass_simp\Okno.cpp(24,41): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\Kiki\source\repos\grass_simp\grass_simp\Okno.cpp(45,58): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
-C:\Users\Kiki\source\repos\grass_simp\grass_simp\Okno.cpp(45,61): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
+﻿  main.cpp
   grass_simp.vcxproj -> C:\Users\Kiki\source\repos\grass_simp\x64\Debug\grass_simp.exe

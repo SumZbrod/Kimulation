@@ -3,14 +3,9 @@
 #include "Human.h"
 
 void test_karta() {
-	int h = 8;
-	int w = 12;
-
-	Karta forest(h, w);
-
-	int window_height = 1440, window_width = 810;
-	Okno village_window(window_height, window_width, forest);
-
+	//int window_height = 800, window_width = 1400, cell_diameter = 10;
+	int window_height = 1080, window_width = 1920, cell_diameter = 10;
+	Okno village_window(window_height, window_width, cell_diameter);
 	village_window.loop();
 
 	//int* A = forest.getRouteWithoutWall(1, 1, 3, 3);

@@ -1,23 +1,21 @@
-#ifndef OKNO_H
-#define OKNO_H
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Karta.h"
 #include "Person.h"
 #include <vector>
 #include "iostream"
 
-
 class Okno
 {
 	public:
-		Okno(int window_height, int window_width, Karta m_world);
+		Okno(int window_height, int window_width, int cell_diameter);
 		Karta m_world;
 		Person m_person;
 		void loop();
 		void draw_person(sf::RenderWindow& window);
 	
 	private:
-		int m_height, m_width, cell_diameter;
+		int m_height, m_width, m_cell_diameter;
 		sf::RenderWindow window;
 		//sf::Color sf_palette[];
 		//sf::Color green;
@@ -26,4 +24,3 @@ class Okno
 };
 
 
-#endif 

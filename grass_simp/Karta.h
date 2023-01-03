@@ -17,7 +17,7 @@ class Karta
 		void show();
 		//float get(int x, int y);
 		bool in_area(int y, int x);
-
+		void add(int y, int x, float v);
 		//int getRouteWithoutWall(int start_x, int start_y, int finish_x, int finish_y);
 		std::vector<int> generatePath(int start_x, int start_y, int finish_x, int finish_y);
 };
