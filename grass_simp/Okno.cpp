@@ -1,6 +1,5 @@
 #include "Okno.h"
-#include "Karta.h"
-#include "Person.h"
+
 
 Okno::Okno(int window_width, int window_height, int cell_diameter)
 	: m_width(window_width), m_height(window_height), m_cell_diameter(cell_diameter), m_world(Karta(4, 4))
@@ -20,6 +19,7 @@ void Okno::draw_person(sf::RenderWindow& window)
 
 sf::Color Okno::getGrassColor(float level)
 {
+	// int index = level * grassColor.size(); Хватит пользоваться нейросетью =(
 	int index = static_cast<int>(level * grassColors.size());
 	if (index >= grassColors.size()) index = grassColors.size() - 1;
 	sf::Color res_clr = grassColors[index];
@@ -28,13 +28,13 @@ sf::Color Okno::getGrassColor(float level)
 
 void Okno::loop()
 {
-	sf::RenderWindow window(sf::VideoMode(m_height, m_width), "Kimulation", sf::Style::Fullscreen);
+	sf::RenderWindow window(sf::VideoMode(m_height, m_width), "Kimulation");
 
 	sf::RectangleShape square(sf::Vector2f(m_cell_diameter, m_cell_diameter));
 	
 	int x = 0, y = 0;
 	window.clear(sf::Color::Black);
-	window.setFramerateLimit(6);
+	window.setFramerateLimit(10);
 	int r = 0;
 	while (window.isOpen()) 
 	{

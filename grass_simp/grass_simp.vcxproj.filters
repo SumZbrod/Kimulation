@@ -33,6 +33,9 @@
     <ClCompile Include="Human.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="farmer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Karta.h">
@@ -48,6 +51,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Human.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalT.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="farmer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

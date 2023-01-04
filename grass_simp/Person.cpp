@@ -13,6 +13,7 @@ int sigm(int x, int l = 0, int h = 1)
 //Person::Person(int y, int x) : y_pos(y), x_pos(x)
 Person::Person(int x, int y)
 {
+	// Начальная позиция
 	y_pos = y; 
 	x_pos = x;
 }

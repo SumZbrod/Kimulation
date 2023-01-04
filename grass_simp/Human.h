@@ -1,18 +1,30 @@
 #ifndef HUMAN_H
 #define HUMAN_H
+#include "GlobalT.h"
+
 
 class Human
 {
 public:
-    // Constructor
-    Human(int x, int y);
-    Human();
+	// Constructor
+	Human( gl::vec2i );
+	inline gl::vec2i get_pos() { return pos_person; }
+	inline void set_pos( gl::vec2i pos ) { pos_person = pos; }
+	// Other member functions...
 
-    // Other member functions...
+protected:
+	// Параметры которые будут у всех
+	int health, sleep;
+	bool sex;
+	float speed;
+	gl::vec2i pos_person;
 
-private:
-    // Human's position
-    int m_x, m_y;
+
+protected:
+	//Набор функций которые будут изменяться от класса к классу(или нет)
+	virtual void move();
+
+
 };
 
 #endif // HUMAN_H

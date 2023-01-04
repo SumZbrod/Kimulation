@@ -1,10 +1,11 @@
 #include "Karta.h"
 #include "Okno.h"
 #include "Human.h"
+#include "farmer.h"
 
 void test_karta() {
 	//int window_height = 800, window_width = 1400, cell_diameter = 10;
-	int window_height = 1080, window_width = 1920, cell_diameter = 20;
+	int window_height = 768, window_width = 1366, cell_diameter = 20;
 	Okno village_window(window_height, window_width, cell_diameter);
 	village_window.loop();
 
@@ -49,9 +50,7 @@ void test_karta() {
 
 int main() {
 
-	//test_ptr_array();
-	//test_break();
-	//test_exeption();
+ 
 	test_karta();
 	std::cout << "ok";
 	return 0;

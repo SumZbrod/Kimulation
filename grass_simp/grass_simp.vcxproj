@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="A.cpp" />
+    <ClCompile Include="farmer.cpp" />
     <ClCompile Include="Human.cpp" />
     <ClCompile Include="Karta.cpp" />
     <ClCompile Include="main.cpp" />
@@ -148,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="A.h" />
+    <ClInclude Include="farmer.h" />
+    <ClInclude Include="GlobalT.h" />
     <ClInclude Include="Human.h" />
     <ClInclude Include="Karta.h" />
     <ClInclude Include="Okno.h" />

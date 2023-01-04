@@ -1,12 +1,19 @@
 #include "Human.h"
 
 // Constructor
-Human::Human(int x, int y)
-    : m_x(x), m_y(y)
+Human::Human(gl::vec2i pos)
+    : pos_person(pos)
 {
+
+
 }
 
-Human::Human()
-    : m_x(0), m_y(0)
+void Human::move()
 {
+
+
+
 }
+
+
+

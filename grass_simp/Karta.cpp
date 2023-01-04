@@ -1,9 +1,5 @@
 #include "Karta.h"
-#include <exception>
-#include <string>
-#include <sstream>
-#include <utility>
-#include <stdexcept>
+
 
 int signp(int x) {
 	return (x < 0) ? -1 : 1;
@@ -14,6 +10,9 @@ Karta::Karta(int map_width, int map_height)
 
 {
 	world_map = std::vector < std::vector<float> >(m_height, std::vector<float>(m_width, 1.f));
+
+	v_hum.push_back( new Human( { 2,5 } ) );
+	
 }
 
 //Karta::~Karta() {
@@ -25,6 +24,7 @@ Karta::Karta(int map_width, int map_height)
 /// <summary>		
 /// print all value of map in console
 /// </summary>
+/// Подлежит удалению.
 void Karta::show() {
 	for (int y = 0; y < m_width; y++) {
 		for (int x = 0; x < m_height; x++) {
@@ -35,13 +35,25 @@ void Karta::show() {
 	}
 }
 
+//Перенести в отдельный класс логики.
+std::pair<int, int> Karta::sideToDir( int side )
+{
 
+	int x = std::abs( side - 2 ) - 1; // this math function works how cos(pi/2 * sub_side): 0, 1, 2, 3 -> 1, 0, -1, 0
+	int y = std::abs( side - 1 ) - 1; // this math function works how	sin(pi/2 * sub_side): 0, 1, 2, 3 -> 0, -1, 0, 1
+
+	return std::pair<int, int>(x,y);
+
+}
+
+//Пенис
 bool Karta::in_area(int x, int y) {
 	/// <summary>
 	/// function return the true if x and y in the area
 	/// </summary>
 	return (y >= 0 && y < m_height&& x >= 0 && x < m_width);
 }
+
 
 void Karta::add(int x, int y, float v) {
 	if (in_area(x, y))

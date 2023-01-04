@@ -13,6 +13,9 @@ class Okno
 		Person m_person;
 		void loop();
 		void draw_person(sf::RenderWindow& window);
+
+
+
 	
 	private:
 		int m_height, m_width, m_cell_diameter;
@@ -27,6 +30,8 @@ class Okno
 			sf::Color(0x397f7aff), // green
 			sf::Color(0x234f5dff), // light green
 			sf::Color(0x1c2f38ff)  // bright green
+
+			//Сделать через энум 
 		};
 };
 
