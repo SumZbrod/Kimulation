@@ -9,8 +9,8 @@ int signp(int x) {
 	return (x < 0) ? -1 : 1;
 }
 
-Karta::Karta(int map_height, int map_width) 
-	: m_height(map_height), m_width(map_width)
+Karta::Karta(int map_width, int map_height) 
+	: m_width(map_width), m_height(map_height)
 
 {
 	world_map = std::vector < std::vector<float> >(m_height, std::vector<float>(m_width, 1.f));
@@ -26,8 +26,8 @@ Karta::Karta(int map_height, int map_width)
 /// print all value of map in console
 /// </summary>
 void Karta::show() {
-	for (int y = 0; y < m_height; y++) {
-		for (int x = 0; x < m_width; x++) {
+	for (int y = 0; y < m_width; y++) {
+		for (int x = 0; x < m_height; x++) {
 			//std::cout << get(y, x) << '\t';
 			std::cout << world_map[y][x] << '\t';
 		}
@@ -36,15 +36,15 @@ void Karta::show() {
 }
 
 
-bool Karta::in_area(int y, int x) {
+bool Karta::in_area(int x, int y) {
 	/// <summary>
 	/// function return the true if x and y in the area
 	/// </summary>
-	return (x >= 0 && x < m_width && y >= 0 && y < m_height);
+	return (y >= 0 && y < m_height&& x >= 0 && x < m_width);
 }
 
-void Karta::add(int y, int x, float v) {
-	if (in_area(y, x))
+void Karta::add(int x, int y, float v) {
+	if (in_area(x, y))
 	{
 		float old_v = world_map[y][x];
 		world_map[y][x] = std::min(1.f, std::max(0.f, v + old_v));
@@ -66,13 +66,13 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 	// force equal sum of weights of each square of the minimal route or 0 if we don't know
 
 	
-	/*int** obs_array =  new int* [height];
-	for (int i = 0; i < width; i++) {
-		obs_array[i] = new int[width]();
+	/*int** obs_array =  new int* [width];
+	for (int i = 0; i < height; i++) {
+		obs_array[i] = new int[height]();
 	}*/
 
-	//std::vector<float> obs_array(height * width, 0.f);
-	std::vector<std::vector<float>> obs_array(m_height, std::vector<float>(m_width, 0.f));
+	//std::vector<float> obs_array(width * height, 0.f);
+	std::vector<std::vector<float>> obs_array(m_width, std::vector<float>(m_height, 0.f));
 
 	// initialition of values for using in cicle 
 	int x_sign = 0;
@@ -88,7 +88,7 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 
 	// set the first square's force 
 	//obs_array[obs_y][obs_x] = Karta::world_map[obs_y][obs_x];
-	//obs_array[obs_y][obs_x] = Karta::world_map[obs_x + obs_y * width];
+	//obs_array[obs_y][obs_x] = Karta::world_map[obs_x + obs_y * height];
 	
 	obs_array[obs_y][obs_x] = world_map[obs_y][obs_x];
 
@@ -96,7 +96,7 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 	int route_len = 0;
 
 	// loop iterates through the array by spiral and fills it by force
-	for (int r = 1; r < m_width + m_height; r++) {
+	for (int r = 1; r < m_height+ m_width; r++) {
 		// first loop set the value for r-radius of observation circle radius
 		// in this metric circle it's a squre rotated on 45 degree
 		// and r - its length of side this square
@@ -118,7 +118,7 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 				// this cycle goes around one side
 				
 				// check coords in the the area
-				if (in_area(obs_y, obs_x)) {
+				if (in_area(obs_x, obs_y)) {
 					min_v = -1.f;
 					for (int sub_side = 0; sub_side < 4; sub_side++) {
 						// finding the smallest value other than 0 around a cell in coords in obs_x, obs_y 
@@ -130,7 +130,7 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 						// and this sub's move coords arount cell like: (1, 0) - right; (0, -1) - up; (-1, 0) - left; (0, 1) - down 
 						//std::cout << 117 << '\t' << obs_y << ", " << obs_x << '\n';
 						//std::cout << 118 << '\t' << obs_y + sub_y << ", " << obs_x + sub_x << '\n';
-						if (in_area(obs_y + sub_y, obs_x + sub_x)){
+						if (in_area(obs_x + sub_x, obs_y + sub_y)){
 							//std::cout << 120 << '\t' << obs_y + sub_y << ", " << obs_x + sub_x << '\n';
 							cell_value = obs_array[obs_y + sub_y][obs_x + sub_x];
 							if (cell_value != 0 && (min_v == -1 || cell_value < min_v)) {
@@ -141,7 +141,7 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 					}	
 					//	
 					//std::cout << 129 << '\t' << obs_y << ", " << obs_x << '\n';
-					//obs_array[obs_y*width+obs_x] = get(obs_y, obs_x) + min_v;
+					//obs_array[obs_y*height+obs_x] = get(obs_y, obs_x) + min_v;
 					obs_array[obs_y][obs_x] = world_map[obs_y][obs_x] + min_v;
 				}		
 				// check whether the obs coordinates match the target
@@ -178,10 +178,10 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 		for (int sub_side = 0; sub_side < 4; sub_side++) {
 			sub_x = std::abs(sub_side - 2) - 1;
 			sub_y = std::abs(sub_side - 1) - 1;
-			if (in_area(obs_y + sub_y, obs_x + sub_x)) {
+			if (in_area(obs_x + sub_x, obs_y + sub_y)) {
 				//std::cout << 162 << obs_y + sub_y << ", " << obs_x + sub_x << '\n';
 				//cell_value = obs_array[obs_y + sub_y][obs_x + sub_x];
-				//obs_coord = width * (obs_y + sub_y) + obs_x + sub_x;
+				//obs_coord = height* (obs_y + sub_y) + obs_x + sub_x;
 				//cell_value = obs_array[obs_coord];
 				cell_value = obs_array[obs_y + sub_y][obs_x + sub_x];
 				if (cell_value != 0 && (min_v == -1 || cell_value < min_v + el)) {
@@ -202,9 +202,9 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 		el = 1 - el;
 	}
 
-	for (int y = 0; y < m_height; y++) {
-		for (int x = 0; x < m_width; x++) {
-			//std::cout << obs_array[y * width + x] << '\t';
+	for (int y = 0; y < m_width; y++) {
+		for (int x = 0; x < m_height; x++) {
+			//std::cout << obs_array[y * height+ x] << '\t';
 			std::cout << obs_array[y][x] << '\t';
 		}
 		std::cout << '\n';
@@ -215,7 +215,7 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 	} 
 	std::cout << '\n';
 	//rebild_to_vector
-	/*for (int i = 0; i < height; i++) {
+	/*for (int i = 0; i < width; i++) {
 		delete[] obs_array[i];
 	}*/
 	//std::vector<float>().swap(obs_array);
