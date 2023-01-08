@@ -15,5 +15,5 @@ void Human::move()
 
 }
 
-
+bool Human::take(gl::vec2i pos_item){}
 

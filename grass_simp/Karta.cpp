@@ -48,9 +48,9 @@ std::pair<int, int> Karta::sideToDir( int side )
 
 //Пенис
 bool Karta::in_area(int x, int y) {
-	/// <summary>
-	/// function return the true if x and y in the area
-	/// </summary>
+	
+	// function return the true if x and y in the area
+	
 	return (y >= 0 && y < m_height&& x >= 0 && x < m_width);
 }
 
@@ -61,10 +61,7 @@ void Karta::add(int x, int y, float v) {
 		float old_v = world_map[y][x];
 		world_map[y][x] = std::min(1.f, std::max(0.f, v + old_v));
 	}
-	/*else
-	{
-		throw std::out_of_range("Out of range (" + std::to_string(x) + ' ' + std::to_string(y) + ')');
-	}*/
+
 }
 
 //int* Karta::getRouteWithoutWall(int start_x, int start_y, int finish_x, int finish_y) {
@@ -235,4 +232,3 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 	//delete &obs_array;
 	return route_array;
 }
-

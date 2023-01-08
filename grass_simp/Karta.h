@@ -33,5 +33,3 @@ private:
 		//int getRouteWithoutWall(int start_x, int start_y, int finish_x, int finish_y);
 		std::vector<int> generatePath(int start_x, int start_y, int finish_x, int finish_y);
 };
-
-

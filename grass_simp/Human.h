@@ -23,6 +23,7 @@ protected:
 protected:
 	//Набор функций которые будут изменяться от класса к классу(или нет)
 	virtual void move();
+	virtual bool take( gl::vec2i );
 
 
 };

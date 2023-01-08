@@ -9,8 +9,8 @@ public:
 
 	//void update(int field_width, int field_height);
 	void update(Karta* field);
-	int x_pos = 0;
-	int y_pos = 0;
+	int x_pos;
+	int y_pos;
 	
 	//Мув принмает направление ходить 
 	// 0 право
