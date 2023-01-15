@@ -1,11 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "GameComponent.h"
 #include "Karta.h"
 #include "Person.h"
 #include <vector>
 #include "iostream"
 
-class Okno
+class Okno : private GameComponent
 {
 	public:
 		Okno(int window_height, int window_width, int cell_diameter);
@@ -13,9 +14,6 @@ class Okno
 		Person m_person;
 		void loop();
 		void draw_person(sf::RenderWindow& window);
-
-
-
 	
 	private:
 		int m_height, m_width, m_cell_diameter;

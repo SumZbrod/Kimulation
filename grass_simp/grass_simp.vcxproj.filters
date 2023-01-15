@@ -21,19 +21,13 @@
     <ClCompile Include="Karta.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Person.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Okno.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Human.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="farmer.cpp">
+    <ClCompile Include="GameComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,13 +35,7 @@
     <ClInclude Include="Karta.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Person.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Okno.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="A.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Human.h">
@@ -56,7 +44,7 @@
     <ClInclude Include="GlobalT.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="farmer.h">
+    <ClInclude Include="GameComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

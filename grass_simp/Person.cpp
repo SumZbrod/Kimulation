@@ -9,7 +9,6 @@ int sigm(int x, int l = 0, int h = 1)
 	return std::max(l, std::min(h, x));
 }
 
-
 //Person::Person(int y, int x) : y_pos(y), x_pos(x)
 Person::Person(int x, int y)
 {
@@ -33,7 +32,6 @@ void Person::update(Karta* field)
 	y_pos = sigm(y_pos, 0, field->m_height - 1);
 	x_pos = sigm(x_pos, 0, field->m_width - 1);
 }
-
 
 
 void move(int direction)

@@ -1,7 +1,8 @@
 #include "Karta.h"
 
 
-int signp(int x) {
+int signp(int x) 
+{
 	return (x < 0) ? -1 : 1;
 }
 
@@ -9,33 +10,24 @@ Karta::Karta(int map_width, int map_height)
 	: m_width(map_width), m_height(map_height)
 
 {
-	world_map = std::vector < std::vector<float> >(m_height, std::vector<float>(m_width, 1.f));
+	m_map = std::vector < std::vector<float> >(m_height, std::vector<float>(m_width, 1.f));
 
-	v_hum.push_back( new Human( { 2,5 } ) );
+	AddObject( new Human() );
 	
 }
 
-//Karta::~Karta() {
-	//std::vector<float>().swap(world_map);
-	//delete world_map;
 
-//}
-
-/// <summary>		
-/// print all value of map in console
-/// </summary>
-/// Подлежит удалению.
+// print all value of map in console
 void Karta::show() {
 	for (int y = 0; y < m_width; y++) {
 		for (int x = 0; x < m_height; x++) {
 			//std::cout << get(y, x) << '\t';
-			std::cout << world_map[y][x] << '\t';
+			std::cout << m_map[y][x] << '\t';
 		}
 		std::cout << '\n';
 	}
 }
 
-//Перенести в отдельный класс логики.
 std::pair<int, int> Karta::sideToDir( int side )
 {
 
@@ -46,7 +38,6 @@ std::pair<int, int> Karta::sideToDir( int side )
 
 }
 
-//Пенис
 bool Karta::in_area(int x, int y) {
 	
 	// function return the true if x and y in the area
@@ -58,8 +49,8 @@ bool Karta::in_area(int x, int y) {
 void Karta::add(int x, int y, float v) {
 	if (in_area(x, y))
 	{
-		float old_v = world_map[y][x];
-		world_map[y][x] = std::min(1.f, std::max(0.f, v + old_v));
+		float old_v = m_map[y][x];
+		m_map[y][x] = std::min(1.f, std::max(0.f, v + old_v));
 	}
 
 }
@@ -96,10 +87,10 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 	int obs_y = start_y;
 
 	// set the first square's force 
-	//obs_array[obs_y][obs_x] = Karta::world_map[obs_y][obs_x];
-	//obs_array[obs_y][obs_x] = Karta::world_map[obs_x + obs_y * height];
+	//obs_array[obs_y][obs_x] = Karta::m_map[obs_y][obs_x];
+	//obs_array[obs_y][obs_x] = Karta::m_map[obs_x + obs_y * height];
 	
-	obs_array[obs_y][obs_x] = world_map[obs_y][obs_x];
+	obs_array[obs_y][obs_x] = m_map[obs_y][obs_x];
 
 	bool target_finded = false;
 	int route_len = 0;
@@ -151,7 +142,7 @@ std::vector<int> Karta::generatePath(int start_x, int start_y, int finish_x, int
 					//	
 					//std::cout << 129 << '\t' << obs_y << ", " << obs_x << '\n';
 					//obs_array[obs_y*height+obs_x] = get(obs_y, obs_x) + min_v;
-					obs_array[obs_y][obs_x] = world_map[obs_y][obs_x] + min_v;
+					obs_array[obs_y][obs_x] = m_map[obs_y][obs_x] + min_v;
 				}		
 				// check whether the obs coordinates match the target
 				if (obs_x == finish_x && obs_y == finish_y) {

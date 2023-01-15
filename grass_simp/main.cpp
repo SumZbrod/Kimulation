@@ -1,13 +1,12 @@
 #include "Karta.h"
-#include "Okno.h"
+//#include "Okno.h"
 #include "Human.h"
-#include "farmer.h"
 
 void test_karta() {
 	//int window_height = 800, window_width = 1400, cell_diameter = 10;
 	int window_height = 768, window_width = 1366, cell_diameter = 20;
-	Okno village_window(window_height, window_width, cell_diameter);
-	village_window.loop();
+	//Okno village_window(window_height, window_width, cell_diameter);
+	//village_window.loop();
 
 	//int* A = forest.getRouteWithoutWall(1, 1, 3, 3);
 	//delete[] A;

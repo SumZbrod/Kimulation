@@ -1,31 +1,24 @@
-#ifndef HUMAN_H
-#define HUMAN_H
+#pragma once
 #include "GlobalT.h"
+#include "GameComponent.h"
 
-
-class Human
+class Human: public GameComponent
 {
 public:
-	// Constructor
-	Human( gl::vec2i );
-	inline gl::vec2i get_pos() { return pos_person; }
-	inline void set_pos( gl::vec2i pos ) { pos_person = pos; }
-	// Other member functions...
-
-protected:
-	// Параметры которые будут у всех
+	// Constructor											
+	
+	inline gl::vec2i get_pos() { return pos_person; }			
+	inline void set_pos( gl::vec2i pos ) { pos_person = pos; }		
+	// Other member functions...									
+																	
+protected:															
 	int health, sleep;
 	bool sex;
-	float speed;
+	float speed;									
 	gl::vec2i pos_person;
-
-
-protected:
-	//Набор функций которые будут изменяться от класса к классу(или нет)
+			
+								
+protected:	
 	virtual void move();
-	virtual bool take( gl::vec2i );
-
-
 };
 
-#endif // HUMAN_H
